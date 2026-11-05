@@ -7,8 +7,7 @@
 
 int main() {
     pid_t filho;
-
-    int regulador = 0;
+Boa
     filho = fork();
     
    
