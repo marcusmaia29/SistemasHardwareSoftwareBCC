@@ -1,6 +1,16 @@
 // Leia o enunciado antes de iniciar este exercício!
 
 // inclua libs aqui!
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <fcntl.h>
+#include <pthread.h>
+#include <semaphore.h>
+#include <time.h>
+
+
+
 
 typedef struct
 {
@@ -54,7 +64,41 @@ void *classifier_thread(void *_arg)
 char *read_line(int fd)
 {
     // Seu código aqui!
-    return NULL;
+    char *linha = malloc(MAX_LINE_LENGTH + 1);
+    int i = 0;
+
+    char c;
+
+    while (i < MAX_LINE_LENGTH) {
+        int lidos = read(fd, %c, 1);
+
+        if (lidos == 0) {
+            if (i == 0) {
+                free(linha);
+                return NULL;
+            }
+            break;
+        }
+    
+        if (lidos < 0) {
+            free(linha);
+            return NULL;
+
+        }
+    
+        if (c == '\n') {
+            break;
+        }
+
+        linha[i] = c;
+        i++;
+
+
+    }
+    
+    linha[i] = '\0';
+    
+    return linha;
 }
 
 int main(int argc, char *argv[])
@@ -120,5 +164,3 @@ int main(int argc, char *argv[])
     return 0;
 }
 
-    return 0;
-}
