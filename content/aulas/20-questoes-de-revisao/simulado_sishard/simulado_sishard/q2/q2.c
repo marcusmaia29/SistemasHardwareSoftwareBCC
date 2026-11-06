@@ -10,8 +10,25 @@ int main(int argc, char *argv[]){
     int ret;
     int wst;
 
+    pid_t filho = fork();
+
     do {
         // Construa a chamada do executavel siscoin. Veja enunciado.
+        if (filho == 0) {
+            char *args[] = {"./siscoin", argv[1], argv[2], argv[3], NULL};
+            execvp(args, filho);
+            printf("execvp falhou\n");
+        } else {
+
+            int status;
+            wait(&status);
+
+            if (WIFESTATUS(status)) {
+                printf("O filho retornou: %d\n", WEXITEDSTATUS(status));
+            }
+
+        }
+
 
         // No pai, espere e trate o resultado
 
