@@ -5,6 +5,8 @@
 #include <unistd.h>
 #include <time.h>
 #include <signal.h>
+#include <fcntl.h>
+#include <string.h>
 
 // Variável GLOBAL para armazenar o valor de PI aproximado
 double pi = 0.0;
@@ -38,13 +40,24 @@ double aproxima_pi() {
 }
 
 // Crie AQUI a função que exporta o valor de pi para um arquivo chamado pi.txt
+void exporta_pi() {
+    char buffer[100];
 
+    sprintf(buffer, "%f", pi);
+
+    int fd = open("pi.txt", O_WRONLY | O_CREAT | O_TRUNC, 0700);
+
+    write(fd, buffer, strlen(buffer));
+
+    close(fd);
+}
 
 // Esta função deve ser chamada pelo handler quando este for acionado
 
 // Crie AQUI a função que será o handler do sinal
 void handler(int sinal) {
-    
+
+    printf("Sinal Control+c do terminal %d\n", sinal);
 }
 
 int main() {
