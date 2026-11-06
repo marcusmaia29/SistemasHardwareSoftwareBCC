@@ -7,6 +7,9 @@
 #include <pthread.h>
 #include <semaphore.h>
 
+sem_t sem_inicio;
+sem_t sem_fim;
+
 void *thread1(void *_arg) {
 
     printf("A\n");
@@ -57,9 +60,6 @@ void *thread4(void *_arg) {
     return NULL;
 }
 
-sem_t sem_inicio;
-sem_t sem_fim;
-
 int main(int argc, char *argv[]) {
 
     sem_init(&sem_inicio, 0, 0);
@@ -79,8 +79,8 @@ int main(int argc, char *argv[]) {
     }
 
     // Espere por TODAS as threads
-    for (int i = 0. i < 4; i++) {
-        pthread_join(&threads[i], NULL, funcoes[i], NULL);
+    for (int i = 0; i < 4; i++) {
+        pthread_join(&threads[i], NULL);
     }
 
     sem_destroy(&sem_inicio);
