@@ -50,6 +50,8 @@ void *classifier_thread(void *_arg)
     t_arg *arg = _arg;
 
     arg->res = classifier(arg->palavra);
+
+    return NULL;
 }
 
 /* Função que lê uma palavra de um arquivo.
