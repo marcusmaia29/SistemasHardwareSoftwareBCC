@@ -9,9 +9,6 @@
 #include <semaphore.h>
 #include <time.h>
 
-
-
-
 typedef struct
 {
     char *palavra; // palavra a ser classificada
@@ -19,6 +16,8 @@ typedef struct
 } t_arg;
 
 #define MAX_LINE_LENGTH 256
+
+sem_t sem_threads;
 
 /*
  * Função que simula a classificação de uma palavra
@@ -49,7 +48,11 @@ void *classifier_thread(void *_arg)
 {
     t_arg *arg = _arg;
 
+    sem_wait(&sem_threads);
+
     arg->res = classifier(arg->palavra);
+
+    sem_post(&sem_threads);
 
     return NULL;
 }
@@ -65,41 +68,41 @@ void *classifier_thread(void *_arg)
  */
 char *read_line(int fd)
 {
-    // Seu código aqui!
     char *linha = malloc(MAX_LINE_LENGTH + 1);
     int i = 0;
-
     char c;
 
-    while (i < MAX_LINE_LENGTH) {
+    while (i < MAX_LINE_LENGTH)
+    {
         int lidos = read(fd, &c, 1);
 
-        if (lidos == 0) {
-            if (i == 0) {
+        if (lidos == 0)
+        {
+            if (i == 0)
+            {
                 free(linha);
                 return NULL;
             }
             break;
         }
-    
-        if (lidos < 0) {
+
+        if (lidos < 0)
+        {
             free(linha);
             return NULL;
-
         }
-    
-        if (c == '\n') {
+
+        if (c == '\n')
+        {
             break;
         }
 
         linha[i] = c;
         i++;
-
-
     }
-    
+
     linha[i] = '\0';
-    
+
     return linha;
 }
 
@@ -123,6 +126,8 @@ int main(int argc, char *argv[])
     }
 
     srand(time(NULL));
+
+    sem_init(&sem_threads, 0, n_threads);
 
     int threads_limit = 2; // Vamos começar alocando espaço para 02 threads
     pthread_t *tids = malloc(sizeof(pthread_t) * threads_limit);
@@ -161,8 +166,42 @@ int main(int argc, char *argv[])
         threads_created++;
     }
 
-    // Complete a main!
+    int classe0 = 0;
+    int classe1 = 0;
+    int classe2 = 0;
+
+    for (int i = 0; i < threads_created; i++)
+    {
+        pthread_join(tids[i], NULL);
+
+        printf("THREAD %02d TERMINOU COM O RESULTADO %d\n", i, args[i]->res);
+
+        if (args[i]->res == 0)
+        {
+            classe0++;
+        }
+        else if (args[i]->res == 1)
+        {
+            classe1++;
+        }
+        else if (args[i]->res == 2)
+        {
+            classe2++;
+        }
+
+        free(args[i]->palavra);
+        free(args[i]);
+    }
+
+    printf("RESULTADO:\n");
+    printf("TOTAL CLASSE 0: %d\n", classe0);
+    printf("TOTAL CLASSE 1: %d\n", classe1);
+    printf("TOTAL CLASSE 2: %d\n", classe2);
+
+    close(fd1);
+    sem_destroy(&sem_threads);
+    free(tids);
+    free(args);
 
     return 0;
 }
-
