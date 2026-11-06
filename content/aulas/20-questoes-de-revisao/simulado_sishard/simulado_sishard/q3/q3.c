@@ -57,7 +57,8 @@ void exporta_pi() {
 // Crie AQUI a função que será o handler do sinal
 void handler(int sinal) {
 
-    printf("Sinal Control+c do terminal %d\n", sinal);
+    printf("Control+c do terminal, o sinal é: %d\n", sinal);
+    printf("Valor de pi: %f\n", pi);
 
     exporta_pi();
     exit(0);
