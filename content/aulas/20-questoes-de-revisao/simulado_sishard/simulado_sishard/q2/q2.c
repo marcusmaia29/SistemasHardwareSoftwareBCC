@@ -18,6 +18,8 @@ int main(int argc, char *argv[]){
             char *args[] = {"./siscoin", argv[1], argv[2], argv[3], NULL};
             execvp(args[0], args);
             printf("execvp falhou\n");
+            return 1;
+            
         } else {
 
             // No pai, espere e trate o resultado
