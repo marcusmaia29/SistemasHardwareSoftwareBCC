@@ -58,12 +58,15 @@ void exporta_pi() {
 void handler(int sinal) {
 
     printf("Sinal Control+c do terminal %d\n", sinal);
+
+    exporta_pi();
+    exit(0);
 }
 
 int main() {
 
     // Exiba o PID deste processo
-
+    printf("O PID do processo é: %d\n", getpid());
     // Registre AQUI seu handler para o sinal SIGINT!
     struct sigaction s;
 
