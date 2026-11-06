@@ -70,7 +70,7 @@ char *read_line(int fd)
     char c;
 
     while (i < MAX_LINE_LENGTH) {
-        int lidos = read(fd, %c, 1);
+        int lidos = read(fd, &c, 1);
 
         if (lidos == 0) {
             if (i == 0) {
