@@ -10,7 +10,7 @@ void sig_handler(int num) {
     
     printf("Chamou Ctrl+C\n");
     
-    if (contador == 2) {
+    if (contador == 3) {
         
         struct sigaction s;
         s.sa_handler = SIG_DFL;
@@ -18,6 +18,9 @@ void sig_handler(int num) {
         s.sa_flags = 0;
         
         sigaction(SIGINT, &s, NULL);
+    
+        kill(getpid(), SIGINT);
+    
     }
 }
 
