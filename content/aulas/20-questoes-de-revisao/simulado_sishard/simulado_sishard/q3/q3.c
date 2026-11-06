@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <time.h>
+#include <signal.h>
 
 // Variável GLOBAL para armazenar o valor de PI aproximado
 double pi = 0.0;
@@ -37,15 +38,27 @@ double aproxima_pi() {
 }
 
 // Crie AQUI a função que exporta o valor de pi para um arquivo chamado pi.txt
+
+
 // Esta função deve ser chamada pelo handler quando este for acionado
 
 // Crie AQUI a função que será o handler do sinal
+void handler(int sinal) {
+    
+}
 
 int main() {
 
     // Exiba o PID deste processo
 
     // Registre AQUI seu handler para o sinal SIGINT!
+    struct sigaction s;
+
+    s.sa_handler = handler;
+    sigemptyset(&s.sa_mask);
+    s.sa_flags = 0;
+
+    sigaction(SIGINT, &s, NULL);
 
     srand(time(NULL));
     aproxima_pi();
